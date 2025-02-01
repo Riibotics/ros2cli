@@ -326,3 +326,40 @@ class TestROS2ServiceCLI(unittest.TestCase):
                     bool_value=True, int32_value=1, float64_value=1.0, string_value='foobar'
                 )
             ), timeout=10)
+
+    @launch_testing.markers.retry_on_failure(times=5, delay=1)
+    def test_call_with_qos_option(self):
+        with self.launch_service_command(
+            arguments=[
+                'call',
+                '--qos-profile',
+                'system_default',
+                '--qos-depth',
+                '5',
+                '--qos-history',
+                'system_default',
+                '--qos-reliability',
+                'system_default',
+                '--qos-durability',
+                'system_default',
+                '--qos-liveliness',
+                'system_default',
+                '--qos-liveliness-lease-duration',
+                '0',
+                '/my_ns/echo',
+                'test_msgs/srv/BasicTypes',
+                '{bool_value: false, int32_value: -1, float64_value: 0.1, string_value: bazbar}'
+            ]
+        ) as service_command:
+            assert service_command.wait_for_shutdown(timeout=10)
+        assert service_command.exit_code == launch_testing.asserts.EXIT_OK
+        assert launch_testing.tools.expect_output(
+            expected_lines=get_echo_call_output(
+                bool_value=False,
+                int32_value=-1,
+                float64_value=0.1,
+                string_value='bazbar'
+            ),
+            text=service_command.output,
+            strict=True
+        )
