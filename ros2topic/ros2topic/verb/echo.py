@@ -57,7 +57,9 @@ class EchoVerb(VerbExtension):
         parser.add_argument(
             'message_type', nargs='?',
             help="Type of the ROS message (e.g. 'std_msgs/msg/String')")
-        add_qos_arguments(parser, 'subscribe', 'sensor_data')
+        add_qos_arguments(
+            parser, 'subscribe', 'sensor_data',
+            ' / compatible profile with running endpoints')
         parser.add_argument(
             '--csv', action='store_true',
             help=(
