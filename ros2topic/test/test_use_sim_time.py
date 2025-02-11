@@ -97,7 +97,7 @@ class TestROS2TopicUseSimTime(unittest.TestCase):
         # test method:
         #   speed up sim time to half second, then expect the process
         #   will end at half time compare to system time (5s).
-        
+
         # Start the timer from 1 second, so that 1st message fires event.
         self.clock_sec = 1
         # Let's speed up 2x fast
