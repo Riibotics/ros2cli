@@ -15,6 +15,7 @@
 import functools
 import re
 import sys
+import time
 import unittest
 
 from launch import LaunchDescription
@@ -78,6 +79,14 @@ class TestROS2TopicUseSimTime(unittest.TestCase):
         self.publisher.publish(msg)
         self.clock_sec += 1
 
+    def wait_for_command_online(self):
+        max_seconds_to_wait = 5
+        end_time = time.time() + max_seconds_to_wait
+        while self.publisher.get_subscription_count() < 1:
+            time.sleep(0.1)
+            assert time.time() <= end_time  # timeout waiting for command online
+        assert self.publisher.get_subscription_count() >= 1
+
     def setUp(self):
         self.context = rclpy.context.Context()
         rclpy.init(context=self.context)
@@ -119,6 +128,8 @@ class TestROS2TopicUseSimTime(unittest.TestCase):
                     filtered_rmw_implementation=get_rmw_implementation_identifier()
                 )
             ) as command:
+                # Check if the command line is ready to receive /clock messages
+                self.wait_for_command_online()
                 # The process will end up in around 2.5s (here we set 3s)
                 self.executor.spin_until_future_complete(
                     rclpy.task.Future(), timeout_sec=3
@@ -184,6 +195,8 @@ class TestROS2TopicUseSimTime(unittest.TestCase):
                     filtered_rmw_implementation=get_rmw_implementation_identifier()
                 )
             ) as command:
+                # Check if the command line is ready to receive /clock messages
+                self.wait_for_command_online()
                 # The future won't complete - we will hit the timeout
                 self.executor.spin_until_future_complete(
                     rclpy.task.Future(), timeout_sec=5
@@ -241,6 +254,8 @@ class TestROS2TopicUseSimTime(unittest.TestCase):
                     filtered_rmw_implementation=get_rmw_implementation_identifier()
                 )
             ) as command:
+                # Check if the command line is ready to receive /clock messages
+                self.wait_for_command_online()
                 # The future won't complete - we will hit the timeout
                 self.executor.spin_until_future_complete(
                     rclpy.task.Future(), timeout_sec=10
