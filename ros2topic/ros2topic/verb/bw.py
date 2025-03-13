@@ -66,7 +66,7 @@ class BwVerb(VerbExtension):
             "note:\n"
             "  This bandwidth reflects the receiving rate on subscription, "
             "which might be affected by platform resources and QoS configuration, "
-            "and may not exactly match the publisher rate."
+            "and may not exactly match the publisher's bandwidth."
         )
         arg = parser.add_argument(
             'topic',

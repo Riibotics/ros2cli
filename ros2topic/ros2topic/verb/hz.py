@@ -61,7 +61,7 @@ class HzVerb(VerbExtension):
             "note:\n"
             "  This rate reflects the receiving rate on subscription, "
             "which might be affected by platform resources and QoS configuration, "
-            "and may not exactly match the publisher rate."
+            "and may not exactly match the publisher's rate."
         )
         arg = parser.add_argument(
             'topic_name',
