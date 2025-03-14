@@ -57,10 +57,10 @@ class HzVerb(VerbExtension):
 
     def add_arguments(self, parser, cli_name):
         parser.description = (
-            "Print the average receiving rate to screen.\n\n"
-            "note:\n"
-            "  This rate reflects the receiving rate on subscription, "
-            "which might be affected by platform resources and QoS configuration, "
+            'Print the average receiving rate to screen.\n\n'
+            'note:\n'
+            '  This rate reflects the receiving rate on subscription, '
+            'which might be affected by platform resources and QoS configuration, '
             "and may not exactly match the publisher's rate."
         )
         arg = parser.add_argument(
