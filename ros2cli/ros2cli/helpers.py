@@ -123,10 +123,7 @@ def collect_stdin():
 
 
 def get_rmw_additional_env(rmw_implementation: str) -> Dict[str, str]:
-    """
-    Get a dictionary of additional environment variables based on rmw
-
-    """
+    """Get a dictionary of additional environment variables based on rmw."""
     if rmw_implementation == 'rmw_zenoh_cpp':
         return {
             'RMW_IMPLEMENTATION': rmw_implementation,

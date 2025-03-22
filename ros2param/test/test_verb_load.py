@@ -35,8 +35,8 @@ import pytest
 import rclpy
 from rclpy.utilities import get_available_rmw_implementations
 
-from ros2cli.node.strategy import NodeStrategy
 from ros2cli.helpers import get_rmw_additional_env
+from ros2cli.node.strategy import NodeStrategy
 
 import yaml
 
@@ -108,7 +108,7 @@ def generate_test_description(rmw_implementation):
         name=TEST_NODE,
         namespace=TEST_NAMESPACE,
         arguments=[path_to_parameter_node_script],
-        additional_env=additional_env
+        additional_env=additional_env,
     )
 
     return LaunchDescription([
