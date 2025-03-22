@@ -163,6 +163,7 @@ class TestVerbLoad(unittest.TestCase):
 
         @contextlib.contextmanager
         def launch_param_dump_command(self, arguments):
+            additional_env = get_rmw_additional_env(rmw_implementation)
             param_dump_command_action = ExecuteProcess(
                 cmd=['ros2', 'param', 'dump', *arguments],
                 additional_env=additional_env,
