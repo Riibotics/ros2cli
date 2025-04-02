@@ -2,8 +2,8 @@
 Changelog for package ros2pkg
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+0.32.3 (2025-04-02)
+-------------------
 * Update minimum CMake version CMakeLists.txt.em (`#969 <https://github.com/ros2/ros2cli/issues/969>`_) (`#971 <https://github.com/ros2/ros2cli/issues/971>`_)
   (cherry picked from commit a91bbc1b25d1d45e727d430a86d9f05646e71288)
   Co-authored-by: Sebastian Castro <4603398+sea-bass@users.noreply.github.com>

@@ -2,8 +2,8 @@
 Changelog for package ros2action
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+0.32.3 (2025-04-02)
+-------------------
 * Correct the license content (`#979 <https://github.com/ros2/ros2cli/issues/979>`_) (`#980 <https://github.com/ros2/ros2cli/issues/980>`_)
   (cherry picked from commit 1760f4adad4d3b3cb3173ec951c5324def833c16)
   Co-authored-by: Barry Xu <barry.xu@sony.com>

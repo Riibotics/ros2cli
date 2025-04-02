@@ -2,8 +2,8 @@
 Changelog for package ros2topic
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+0.32.3 (2025-04-02)
+-------------------
 * Adapt tests to Zenoh (backport `#988 <https://github.com/ros2/ros2cli/issues/988>`_) (`#991 <https://github.com/ros2/ros2cli/issues/991>`_)
   * Adapt tests to Zenoh (`#988 <https://github.com/ros2/ros2cli/issues/988>`_)
   (cherry picked from commit 31d814d1c9e7cbe1bab9180ffb5f101707e02df4)
