@@ -29,8 +29,8 @@
 # This file is originally from:
 # https://github.com/ros/ros_comm/blob/6e5016f4b2266d8a60c9a1e163c4928b8fc7115e/tools/rostopic/src/rostopic/__init__.py
 
-from collections import defaultdict
 
+from collections import defaultdict, OrderedDict
 import functools
 import math
 import threading
@@ -50,6 +50,7 @@ from ros2topic.api import positive_int
 from ros2topic.api import TopicNameCompleter
 from ros2topic.eval import base_eval_model, Expr
 from ros2topic.verb import VerbExtension
+from rosidl_runtime_py.convert import message_to_ordereddict
 
 DEFAULT_WINDOW_SIZE = 10000
 
@@ -92,16 +93,6 @@ class HzVerb(VerbExtension):
         return main(args)
 
 
-def _get_nested_messages(msg_class):
-    all_attributes = list(msg_class.__slots__)
-    for attr in msg_class.__slots__:
-        value = getattr(msg_class, attr)
-        if hasattr(value, '__slots__'):
-            nested_messages = _get_nested_messages(value)
-            all_attributes.extend(nested_messages)
-    return all_attributes
-
-
 def _setup_base_safe_eval():
     safe_eval_model = base_eval_model.clone()
 
@@ -124,12 +115,27 @@ def _setup_base_safe_eval():
     return safe_eval_model
 
 
+def _get_nested_messages(msg_ordereddict):
+    """Helper function to get a list of all message field names recursively"""
+    all_attributes = []
+    for (k, v) in msg_ordereddict.items():
+        all_attributes.append(k)
+        if type(v) is OrderedDict:
+            nested_attrs = _get_nested_messages(v)
+            all_attributes.extend(nested_attrs)
+    return all_attributes
+
+
 def _setup_safe_eval(safe_eval_model, msg_class, topic):
     # allow-list topic builtins, msg attributes
     topic_builtins = [i for i in dir(topic) if not i.startswith('_')]
     safe_eval_model.attributes.extend(topic_builtins)
+
     # recursively get all nested message attributes
-    msg_attributes = _get_nested_messages(msg_class)
+    # msg_class in this case is a prototype that needs to be instantiated to get
+    # an ordered dictionary of message fields
+    msg_ordereddict = message_to_ordereddict(msg_class())
+    msg_attributes = _get_nested_messages(msg_ordereddict)
     safe_eval_model.attributes.extend(msg_attributes)
     return safe_eval_model
 
