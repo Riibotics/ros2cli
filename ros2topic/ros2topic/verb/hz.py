@@ -123,6 +123,7 @@ def _setup_base_safe_eval():
     safe_eval_model.allowed_functions.extend(safe_builtins)
     return safe_eval_model
 
+
 def _setup_safe_eval(safe_eval_model, msg_class, topic):
     # allow-list topic builtins, msg attributes
     topic_builtins = [i for i in dir(topic) if not i.startswith('_')]
