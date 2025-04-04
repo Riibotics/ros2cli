@@ -12,6 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import re
 from typing import Optional
 from typing import TypeVar
 
@@ -72,7 +73,9 @@ class EchoVerb(VerbExtension):
             help='Echo a selected field of a message. '
                  "Use '.' to select sub-fields. "
                  'For example, to echo the position field of a nav_msgs/msg/Odometry message: '
-                 "'ros2 topic echo /odom --field pose.pose.position'",
+                 "'ros2 topic echo /odom --field pose.pose.position'. "
+                 'Use the --field option multiple times to echo multiple fields. '
+                 'If the field is an array, use the syntax .[index] to select a single element.'
         )
         parser.add_argument(
             '--full-length', '-f', action='store_true',
@@ -215,12 +218,19 @@ class EchoVerb(VerbExtension):
     def _subscriber_callback(self, msg, info):
         submsgs = []
         if self.fields_list:
+            # Matches strings exactly in the format "[digits]" (e.g., "[123]")
+            # and captures the digits as a group
+            is_indexing = re.compile(r'^\[(\d+)\]$')
             for fields in self.fields_list:
                 submsg = msg
                 for field in fields:
+                    match = is_indexing.match(field)
                     try:
-                        submsg = getattr(submsg, field)
-                    except AttributeError as ex:
+                        if match is None:
+                            submsg = getattr(submsg, field)
+                        else:
+                            submsg = submsg[int(match.group(1))]
+                    except (AttributeError, IndexError, TypeError, ValueError) as ex:
                         raise RuntimeError(f"Invalid field '{'.'.join(fields)}': {ex}")
                 submsgs.append(submsg)
         else:
