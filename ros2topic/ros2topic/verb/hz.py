@@ -96,6 +96,7 @@ def _get_nested_messages(msg_class):
             all_attributes.extend(nested_messages)
     return all_attributes
 
+
 def _setup_base_safe_eval():
     safe_eval_model = base_eval_model.clone()
 
@@ -116,6 +117,7 @@ def _setup_base_safe_eval():
 
     safe_eval_model.allowed_functions.extend(safe_builtins)
     return safe_eval_model
+
 
 def _setup_safe_eval(safe_eval_model, msg_class, topic):
     # allow-list topic builtins, msg attributes
