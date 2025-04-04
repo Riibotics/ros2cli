@@ -75,6 +75,8 @@ class SafeAST(ast.NodeVisitor):
         if type(node).__name__ in self.model.nodes:
 
             if isinstance(node, ast.Attribute):
+                print(self.model.attributes)
+                print(node)
                 if node.attr not in self.model.attributes:
                     raise ValidationException(
                         'Attribute {aname} is not allowed'.format(

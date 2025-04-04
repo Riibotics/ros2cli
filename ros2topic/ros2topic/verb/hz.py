@@ -117,7 +117,6 @@ def _setup_base_safe_eval():
 
 def _get_nested_messages(msg_ordereddict):
     """List all message field names recursively."""
-
     all_attributes = []
     for (k, v) in msg_ordereddict.items():
         all_attributes.append(k)
