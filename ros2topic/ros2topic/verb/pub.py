@@ -168,30 +168,20 @@ def publisher(
         msg_module = get_message(message_type)
     except (AttributeError, ModuleNotFoundError, ValueError):
         raise RuntimeError('The passed message type is invalid')
-<<<<<<< HEAD
-    values_dictionary = yaml.safe_load(values)
+    
+    try:
+        # Handle cases where the user pastes the autocompleted bash safe string
+        if '^J' in values:
+            values = values.replace("'", '')
+            values = values.replace('^J', '\n')
+
+        values_dictionary = yaml.safe_load(values)
+
+    except (yaml.parser.ParserError, yaml.scanner.ScannerError):
+        return 'The passed value needs to be in YAML string or a dictionary'
+    
     if not isinstance(values_dictionary, dict):
         return 'The passed value needs to be a dictionary in YAML format'
-=======
-
-    msg_reader = None
-    if yaml_file:
-        msg_reader = read_msg_from_yaml(yaml_file)
-    else:
-        try:
-            # Handle cases where the user pastes the autocompleted bash safe string
-            if '^J' in values:
-                values = values.replace("'", '')
-                values = values.replace('^J', '\n')
-
-            values_dictionary = yaml.safe_load(values)
-
-        except (yaml.parser.ParserError, yaml.scanner.ScannerError):
-            return 'The passed value needs to be in YAML string or a dictionary'
-
-        if not isinstance(values_dictionary, dict):
-            return 'The passed value needs to be a dictionary in YAML format'
->>>>>>> 526401b (Custom Completion Finder for fetching topic prototype. (#995))
 
     pub = node.create_publisher(msg_module, topic_name, qos_profile)
 
