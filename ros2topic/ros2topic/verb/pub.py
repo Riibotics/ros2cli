@@ -168,7 +168,7 @@ def publisher(
         msg_module = get_message(message_type)
     except (AttributeError, ModuleNotFoundError, ValueError):
         raise RuntimeError('The passed message type is invalid')
-    
+
     try:
         # Handle cases where the user pastes the autocompleted bash safe string
         if '^J' in values:
@@ -179,7 +179,7 @@ def publisher(
 
     except (yaml.parser.ParserError, yaml.scanner.ScannerError):
         return 'The passed value needs to be in YAML string or a dictionary'
-    
+
     if not isinstance(values_dictionary, dict):
         return 'The passed value needs to be a dictionary in YAML format'
 
