@@ -2,8 +2,8 @@
 Changelog for package ros2topic
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+0.32.4 (2025-04-24)
+-------------------
 * Custom Completion Finder for fetching topic prototype. (backport `#995 <https://github.com/ros2/ros2cli/issues/995>`_) (`#1012 <https://github.com/ros2/ros2cli/issues/1012>`_)
   * Custom Completion Finder for fetching topic prototype. (`#995 <https://github.com/ros2/ros2cli/issues/995>`_)
   * Double yaml encoding for fetching topic prototype.
