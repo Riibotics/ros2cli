@@ -374,32 +374,3 @@ class TestVerbLoad(unittest.TestCase):
                 self.fail(f'Failed to parse YAML output: {e}')
             assert params['str_param'] == 'Override'  # Overriden
             assert params['int_param'] == 12345  # Wildcard namespace
-<<<<<<< HEAD
-=======
-
-            # Concatenate wildcard + some overlays with namespace and base node name
-            filepath = self._write_param_file(tmpdir, 'params.yaml',
-                                              INPUT_WILDCARD_PARAMETER_FILE + '\n' +
-                                              INPUT_NS_NODE_OVERLAY_PARAMETER_FILE)
-            with self.launch_param_load_command(
-                arguments=[f'{TEST_NAMESPACE}/{TEST_NODE}', filepath]
-            ) as param_load_command:
-                assert param_load_command.wait_for_shutdown(timeout=TEST_TIMEOUT)
-            assert param_load_command.exit_code == launch_testing.asserts.EXIT_OK
-
-            # Dump and check that wildcard parameters were overriden if in node namespace
-            with self.launch_param_dump_command(
-                arguments=[f'{TEST_NAMESPACE}/{TEST_NODE}']
-            ) as param_dump_command:
-                assert param_dump_command.wait_for_shutdown(timeout=TEST_TIMEOUT)
-            assert param_dump_command.exit_code == launch_testing.asserts.EXIT_OK
-            try:
-                loaded_params = yaml.safe_load(param_dump_command.output)
-                if not isinstance(loaded_params, dict):
-                    self.fail('Invalid YAML output: Expected a dictionary')
-                params = loaded_params[f'{TEST_NAMESPACE}/{TEST_NODE}']['ros__parameters']
-            except yaml.YAMLError as e:
-                self.fail(f'Failed to parse YAML output: {e}')
-            assert params['str_param'] == 'Override'  # Overriden
-            assert params['int_param'] == 12345  # Wildcard namespace
->>>>>>> 7ced745 (fails the test properly to avoid TypeError exception. (#1016))
