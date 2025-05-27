@@ -120,7 +120,8 @@ class EchoVerb(VerbExtension):
         qos_profile = QoSPresetProfiles.get_from_short_key(args.qos_profile)
         profile_configure_short_keys(
             qos_profile, args.qos_reliability, args.qos_durability,
-            args.qos_depth, args.qos_history)
+            args.qos_depth, args.qos_history, args.qos_liveliness,
+            args.qos_liveliness_lease_duration_seconds)
 
         with NodeStrategy(args) as node:
             sub = node.create_subscription(

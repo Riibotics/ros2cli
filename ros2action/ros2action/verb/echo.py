@@ -153,7 +153,8 @@ class EchoVerb(VerbExtension):
         qos_profile = QoSPresetProfiles.get_from_short_key(args.qos_profile)
         profile_configure_short_keys(
             qos_profile, args.qos_reliability, args.qos_durability,
-            args.qos_depth, args.qos_history)
+            args.qos_depth, args.qos_history, args.qos_liveliness,
+            args.qos_liveliness_lease_duration_seconds)
 
         send_goal_event_topic = args.action_name + '/_action/send_goal/_service_event'
         send_goal_event_msg_type = action_module.Impl.SendGoalService.Event
