@@ -81,6 +81,7 @@ def send_goal(action_name, action_type, goal_values, feedback_callback):
     goal_handle = None
     node = None
     action_client = None
+    cancel_future = None
     try:
         try:
             action_module = get_action(action_type)
@@ -106,14 +107,15 @@ def send_goal(action_name, action_type, goal_values, feedback_callback):
         print('Waiting for an action server to become available...')
         action_client.wait_for_server()
 
-        print('Sending goal:\n     {}'.format(message_to_yaml(goal)))
+        print('Sending goal(new version):\n     {}'.format(message_to_yaml(goal)))
         goal_future = action_client.send_goal_async(goal, feedback_callback)
         rclpy.spin_until_future_complete(node, goal_future)
 
         goal_handle = goal_future.result()
-
+        
         # install signal handler to cancel the goal on SIGINT
         def _sigint_cancel_handler(sig, frame):
+            print('Canceling process started')
             nonlocal goal_handle
             # Cancel the goal if it's still active
             if (goal_handle is not None and
@@ -151,7 +153,11 @@ def send_goal(action_name, action_type, goal_values, feedback_callback):
         print('Goal accepted with ID: {}\n'.format(bytes(goal_handle.goal_id.uuid).hex()))
 
         result_future = goal_handle.get_result_async()
-        rclpy.spin_until_future_complete(node, result_future)
+
+        while rclpy.ok() and not result_future.done():
+            rclpy.spin_once(node, timeout_sec=0.1)  # 100 ms
+            if cancel_future and cancel_future.done():
+                break
 
         result = result_future.result()
 
