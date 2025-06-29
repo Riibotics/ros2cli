@@ -107,7 +107,7 @@ def send_goal(action_name, action_type, goal_values, feedback_callback):
         print('Waiting for an action server to become available...')
         action_client.wait_for_server()
 
-        print('Sending goal(new version):\n     {}'.format(message_to_yaml(goal)))
+        print('Sending goal:\n     {}'.format(message_to_yaml(goal)))
         goal_future = action_client.send_goal_async(goal, feedback_callback)
         rclpy.spin_until_future_complete(node, goal_future)
 
